@@ -31,7 +31,7 @@ private:
 	float RightAcceleration = 10.f;
 
 	UPROPERTY(EditAnywhere)
-	float JumpAcceleration = 450.f;
+	float JumpAcceleration = 850.f;
 
 protected:
 	void MoveForward(float AxisValue);

@@ -37,4 +37,13 @@ void AGravityPawn::Tick(float DeltaTime)
 
 	FVector gravityVelocity = gravityDirection * -GravityAcceleration;
 	MeshComponent->SetPhysicsLinearVelocity(gravityVelocity, true);
+
+	// Need to fix the velocity to only use xy relative to the actor (gravity speed is separated)
+	FVector currentVelocity = MeshComponent->GetComponentVelocity();
+	FVector xyVelocity = FVector(currentVelocity.X, currentVelocity.Y, currentVelocity.Z);
+	if (xyVelocity.Size() > MaxVelocity)
+	{
+		FVector clampVelocity = UKismetMathLibrary::ClampVectorSize(xyVelocity, 0.f, MaxVelocity);
+		MeshComponent->SetPhysicsLinearVelocity(FVector(clampVelocity.X, clampVelocity.Y, clampVelocity.Z));
+	}
 }

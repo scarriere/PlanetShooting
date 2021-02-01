@@ -23,6 +23,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	float GravityAcceleration = 10.f;
 
+	UPROPERTY(EditAnywhere)
+	float MaxVelocity = 100.f;
+
 protected:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* MeshComponent;
