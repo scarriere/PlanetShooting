@@ -15,6 +15,9 @@ public:
 	AAttractor();
 
 protected:
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* MeshComponent;
+
 	virtual void BeginPlay() override;
 
 public:	

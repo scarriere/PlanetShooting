@@ -1,4 +1,4 @@
-// // Copyright Samuel Carriere 2021
+// Copyright Samuel Carriere 2021
 
 #pragma once
 
