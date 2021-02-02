@@ -23,6 +23,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	float PlanetScale = 5.f;
 
+	UPROPERTY(EditAnywhere)
+	FRandomStream PlanetSeed;
+
 public:
 	virtual void OnConstruction(const FTransform& Transform) override;
+	void ResourceHit(UPrimitiveComponent* ComponentHit, int32 ItemId);
 };

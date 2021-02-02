@@ -4,6 +4,7 @@
 #include "ControllablePawn.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "../Actors/Planet.h"
 
 AControllablePawn::AControllablePawn()
 {
@@ -30,6 +31,7 @@ void AControllablePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &AControllablePawn::LookRightRate);
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AControllablePawn::Jump);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Pressed, this, &AControllablePawn::Shoot);
 }
 
 void AControllablePawn::MoveForward(float AxisValue)
@@ -53,4 +55,22 @@ void AControllablePawn::Jump()
 {
 	FVector upVelocity = this->GetActorUpVector() * JumpAcceleration;
 	MeshComponent->SetPhysicsLinearVelocity(upVelocity, true);
+}
+
+void AControllablePawn::Shoot()
+{
+	const FName TraceTag("Shoot_Trace");
+	GetWorld()->DebugDrawTraceTag = TraceTag;
+
+	FHitResult Hit;
+	FCollisionQueryParams TraceParams(TEXT("Shoot_Trace"), false, this);
+	FVector PawnHeight = GetActorLocation() + GetActorUpVector() * 50.f;
+	if (GetWorld()->LineTraceSingleByChannel(Hit, PawnHeight, PawnHeight + GetActorForwardVector() * Reach, ECollisionChannel::ECC_Visibility, TraceParams))
+	{
+		APlanet* Planet = Cast<APlanet>(Hit.Actor.Get());
+		if (Planet != NULL)
+		{
+			Planet->ResourceHit(Hit.GetComponent(), Hit.Item);
+		}
+	}
 }

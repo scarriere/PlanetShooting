@@ -3,6 +3,7 @@
 #include "Planet.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Math/RandomStream.h"
 
 APlanet::APlanet()
 {
@@ -20,6 +21,7 @@ void APlanet::OnConstruction(const FTransform & Transform)
 		MeshComponent->SetRelativeScale3D(FVector(PlanetScale, PlanetScale, PlanetScale));
 
 		InstanceMeshComponent->ClearInstances();
+		PlanetSeed.Reset();
 		UStaticMesh* Mesh = MeshComponent->GetStaticMesh();
 		FIndexArrayView IndexBuffer = Mesh->RenderData->LODResources[0].IndexBuffer.GetArrayView();
 
@@ -32,7 +34,7 @@ void APlanet::OnConstruction(const FTransform & Transform)
 				FVector VertexPos = Mesh->RenderData->LODResources[0].VertexBuffers.PositionVertexBuffer.VertexPosition(VertexIndex);
 				FaceCenter += VertexPos;
 			}
-			if (InstanceMeshComponent != NULL)
+			if (InstanceMeshComponent != NULL && PlanetSeed.RandHelper(2) == 1)
 			{
 				FRotator InstanceRotation = UKismetMathLibrary::MakeRotFromZ(FaceCenter / 3);
 				FTransform InstanceTransform = FTransform(InstanceRotation, FaceCenter / 3 * PlanetScale);
@@ -40,5 +42,14 @@ void APlanet::OnConstruction(const FTransform & Transform)
 			}
 		}
 		UE_LOG(LogTemp, Warning, TEXT("Planet Instance count %d"), InstanceMeshComponent->GetInstanceCount())
+	}
+}
+
+void APlanet::ResourceHit(UPrimitiveComponent* ComponentHit, int32 ItemId)
+{
+	UInstancedStaticMeshComponent* InstanceComponentHit = Cast<UInstancedStaticMeshComponent>(ComponentHit);
+	if (InstanceComponentHit != NULL)
+	{
+		InstanceComponentHit->RemoveInstance(ItemId);
 	}
 }
