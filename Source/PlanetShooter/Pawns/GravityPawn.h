@@ -24,7 +24,7 @@ private:
 	float GravityAcceleration = 10.f;
 
 	UPROPERTY(EditAnywhere)
-	float MaxVelocity = 100.f;
+	float MaxVelocity = 500.f;
 
 protected:
 	UPROPERTY(EditAnywhere)

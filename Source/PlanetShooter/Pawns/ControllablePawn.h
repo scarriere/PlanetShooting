@@ -30,18 +30,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	float RightAcceleration = 10.f;
 
-	UPROPERTY(EditAnywhere)
-	float JumpAcceleration = 850.f;
-
-	UPROPERTY(EditAnywhere)
-	float Reach = 250.f;
-
 protected:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 	void LookRightRate(float AxisValue);
-	void Jump();
-	void Shoot();
 
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
