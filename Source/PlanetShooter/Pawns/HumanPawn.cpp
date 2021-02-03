@@ -11,7 +11,7 @@ void AHumanPawn::Jump()
 	MeshComponent->SetPhysicsLinearVelocity(upVelocity, true);
 }
 
-void AHumanPawn::Shoot()
+void AHumanPawn::Collect()
 {
 	const FName TraceTag("Shoot_Trace");
 	GetWorld()->DebugDrawTraceTag = TraceTag;
@@ -42,5 +42,5 @@ void AHumanPawn::SetupPlayerInputComponent(UInputComponent * PlayerInputComponen
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AHumanPawn::Jump);
-	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Pressed, this, &AHumanPawn::Shoot);
+	PlayerInputComponent->BindAction(TEXT("Collect"), IE_Pressed, this, &AHumanPawn::Collect);
 }

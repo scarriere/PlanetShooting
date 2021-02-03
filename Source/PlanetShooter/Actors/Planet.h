@@ -26,7 +26,12 @@ private:
 	UPROPERTY(EditAnywhere)
 	FRandomStream PlanetSeed;
 
+	UPROPERTY(VisibleAnywhere)
+	TArray<FVector> PlanetMap;
+
 public:
 	virtual void OnConstruction(const FTransform& Transform) override;
 	void ResourceHit(UPrimitiveComponent* ComponentHit, int32 ItemId);
+
+	FVector GetRandomPosition();
 };

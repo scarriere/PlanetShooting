@@ -20,7 +20,7 @@ private:
 
 protected:
 	void Jump();
-	void Shoot();
+	void Collect();
 
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

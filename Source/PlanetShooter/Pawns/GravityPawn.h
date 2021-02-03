@@ -23,6 +23,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	float MaxVelocity = 500.f;
 
+
 	void FindAttractor();
 
 protected:
@@ -36,4 +37,6 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+	AAttractor* GetAttractor();
+	UStaticMeshComponent* GetMeshComponent();
 };

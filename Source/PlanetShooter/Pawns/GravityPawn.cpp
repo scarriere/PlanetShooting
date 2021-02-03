@@ -18,6 +18,16 @@ AGravityPawn::AGravityPawn()
 	RootComponent = MeshComponent;
 }
 
+AAttractor* AGravityPawn::GetAttractor()
+{
+	return Attractor;
+}
+
+UStaticMeshComponent* AGravityPawn::GetMeshComponent()
+{
+	return MeshComponent;
+}
+
 void AGravityPawn::BeginPlay()
 {
 	Super::BeginPlay();
