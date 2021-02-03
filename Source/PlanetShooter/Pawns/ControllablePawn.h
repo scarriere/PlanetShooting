@@ -31,8 +31,8 @@ private:
 	float RightAcceleration = 10.f;
 
 protected:
-	void MoveForward(float AxisValue);
-	void MoveRight(float AxisValue);
+	virtual void MoveForward(float AxisValue);
+	virtual void MoveRight(float AxisValue);
 	void LookRightRate(float AxisValue);
 
 public:

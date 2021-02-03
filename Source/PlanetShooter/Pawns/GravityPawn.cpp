@@ -22,21 +22,32 @@ void AGravityPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	TArray<AActor*> FoundActors;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAttractor::StaticClass(), FoundActors);
-	Attractor = Cast<AAttractor>(FoundActors[0]);
+	FindAttractor();
 }
 
 void AGravityPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FVector gravityDirection = UKismetMathLibrary::GetForwardVector(UKismetMathLibrary::FindLookAtRotation(Attractor->GetActorLocation(), this->GetActorLocation()));
-	FRotator gravityRotation = UKismetMathLibrary::MakeRotFromZX(gravityDirection, this->GetActorForwardVector());
-	this->SetActorRotation(gravityRotation);
+	if (Attractor != nullptr)
+	{
+		FVector gravityDirection = UKismetMathLibrary::GetForwardVector(UKismetMathLibrary::FindLookAtRotation(Attractor->GetActorLocation(), this->GetActorLocation()));
+		FRotator gravityRotation = UKismetMathLibrary::MakeRotFromZX(gravityDirection, this->GetActorForwardVector());
+		this->SetActorRotation(gravityRotation);
 
-	FVector gravityVelocity = gravityDirection * -GravityAcceleration;
-	MeshComponent->SetPhysicsLinearVelocity(gravityVelocity, true);
+		FVector gravityVelocity = gravityDirection * -GravityAcceleration;
+		MeshComponent->SetPhysicsLinearVelocity(gravityVelocity, true);
+
+		float distance = UKismetMathLibrary::Vector_Distance(Attractor->GetActorLocation(), this->GetActorLocation());
+		if (distance > 2000.f)
+		{
+			Attractor = nullptr;
+		}
+	}
+	else
+	{
+		FindAttractor();
+	}
 
 	// Need to fix the velocity to only use xy relative to the actor (gravity speed is separated)
 	FVector currentVelocity = MeshComponent->GetComponentVelocity();
@@ -45,5 +56,18 @@ void AGravityPawn::Tick(float DeltaTime)
 	{
 		FVector clampVelocity = UKismetMathLibrary::ClampVectorSize(xyVelocity, 0.f, MaxVelocity);
 		MeshComponent->SetPhysicsLinearVelocity(FVector(clampVelocity.X, clampVelocity.Y, clampVelocity.Z));
+	}
+}
+
+void AGravityPawn::FindAttractor()
+{
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAttractor::StaticClass(), FoundActors);
+	for (AActor* Actor : FoundActors)
+	{
+		if (UKismetMathLibrary::Vector_Distance(Actor->GetActorLocation(), this->GetActorLocation()) < 2000.f)
+		{
+			Attractor = Cast<AAttractor>(Actor);
+		}
 	}
 }

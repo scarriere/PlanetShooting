@@ -18,17 +18,19 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere)
-	AAttractor* Attractor;
-
-	UPROPERTY(EditAnywhere)
 	float GravityAcceleration = 10.f;
 
 	UPROPERTY(EditAnywhere)
 	float MaxVelocity = 500.f;
 
+	void FindAttractor();
+
 protected:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* MeshComponent;
+
+	UPROPERTY(EditAnywhere)
+	AAttractor* Attractor = nullptr;
 
 	virtual void BeginPlay() override;
 

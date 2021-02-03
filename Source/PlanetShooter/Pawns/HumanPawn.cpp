@@ -39,7 +39,7 @@ void AHumanPawn::Shoot()
 
 void AHumanPawn::SetupPlayerInputComponent(UInputComponent * PlayerInputComponent)
 {
-	AControllablePawn::SetupPlayerInputComponent(PlayerInputComponent);
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AHumanPawn::Jump);
 	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Pressed, this, &AHumanPawn::Shoot);
