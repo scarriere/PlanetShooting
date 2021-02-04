@@ -3,6 +3,7 @@
 
 #include "GravityPawn.h"
 #include "../Actors/Attractor.h"
+#include "../Actors/Projectile.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -80,4 +81,10 @@ void AGravityPawn::FindAttractor()
 			Attractor = Cast<AAttractor>(Actor);
 		}
 	}
+}
+
+void AGravityPawn::Shoot()
+{
+	FTransform ProjectileTransform(GetActorRotation(), GetActorLocation() + GetActorForwardVector() * ShootOffsetForward + GetActorUpVector() * ShootOffsetUp);
+	GetWorld()->SpawnActor<AProjectile>(ProjectileClass.Get(), ProjectileTransform);
 }

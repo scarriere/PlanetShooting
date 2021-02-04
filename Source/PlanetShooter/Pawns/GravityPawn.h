@@ -7,6 +7,7 @@
 #include "GravityPawn.generated.h"
 
 class AAttractor;
+class AProjectile;
 
 UCLASS()
 class PLANETSHOOTER_API AGravityPawn : public APawn
@@ -23,6 +24,14 @@ private:
 	UPROPERTY(EditAnywhere)
 	float MaxVelocity = 500.f;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AProjectile> ProjectileClass;
+
+	UPROPERTY(EditAnywhere)
+	float ShootOffsetUp = 50.f;
+
+	UPROPERTY(EditAnywhere)
+	float ShootOffsetForward = 50.f;
 
 	void FindAttractor();
 
@@ -39,4 +48,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	AAttractor* GetAttractor();
 	UStaticMeshComponent* GetMeshComponent();
+	void Shoot();
 };

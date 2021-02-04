@@ -3,7 +3,6 @@
 
 #include "HumanPawn.h"
 #include "../Actors/Planet.h"
-#include "../Actors/Projectile.h"
 #include "ShipPawn.h"
 
 void AHumanPawn::Jump()
@@ -44,11 +43,5 @@ void AHumanPawn::SetupPlayerInputComponent(UInputComponent * PlayerInputComponen
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AHumanPawn::Jump);
 	PlayerInputComponent->BindAction(TEXT("Collect"), IE_Pressed, this, &AHumanPawn::Collect);
-	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Pressed, this, &AHumanPawn::Shoot);
-}
-
-void AHumanPawn::Shoot()
-{
-	FTransform ProjectileTransform(GetActorRotation(), GetActorLocation() + GetActorForwardVector() * 50.f + GetActorUpVector() * 50.f);
-	GetWorld()->SpawnActor<AProjectile>(ProjectileClass.Get(), ProjectileTransform);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Pressed, this, &AGravityPawn::Shoot);
 }

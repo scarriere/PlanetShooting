@@ -7,6 +7,7 @@
 #include "../Actors/Projectile.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Math/UnrealMathUtility.h"
 
 ANPCController::ANPCController()
 {
@@ -17,6 +18,7 @@ void ANPCController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	InitialPosition = GetPawn()->GetActorLocation();
 	GetWorld()->GetTimerManager().SetTimer(WanderTimeHandle, this, &ANPCController::Wander, 1.f, false);
 }
 
@@ -28,13 +30,16 @@ void ANPCController::Wander()
 	APlanet* Planet = Cast<APlanet>(GravityPawn->GetAttractor());
 	if (Planet == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Attractor undefined"))
-		return;
+		TargetPosition = InitialPosition + FVector(FMath::RandRange(-2000.f, 2000.f), FMath::RandRange(-2000.f, 2000.f), FMath::RandRange(-2000.f, 2000.f));
+		DrawDebugPoint(GetWorld(), TargetPosition, 8.f, FColor::Red, true);
+		IsWandering = true;
 	}
-
-	TargetPosition = Planet->GetRandomPosition();
-	DrawDebugPoint(GetWorld(), TargetPosition, 8.f, FColor::Red, true);
-	IsWandering = true;
+	else
+	{
+		TargetPosition = Planet->GetRandomPosition();
+		DrawDebugPoint(GetWorld(), TargetPosition, 8.f, FColor::Red, true);
+		IsWandering = true;
+	}
 }
 
 void ANPCController::Tick(float DeltaTime)
@@ -88,7 +93,10 @@ void ANPCController::Tick(float DeltaTime)
 
 void ANPCController::Shoot()
 {
-	FTransform ProjectileTransform(GetPawn()->GetActorRotation(), GetPawn()->GetActorLocation() + GetPawn()->GetActorForwardVector() * 50.f + GetPawn()->GetActorUpVector() * 50.f);
-	GetWorld()->SpawnActor<AProjectile>(ProjectileClass.Get(), ProjectileTransform);
+	AGravityPawn* GravityPawn = Cast<AGravityPawn>(GetPawn());
+	if (GravityPawn != nullptr)
+	{
+		GravityPawn->Shoot();
+	}
 	IsShooting = false;
 }

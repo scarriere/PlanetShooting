@@ -20,6 +20,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	FVector TargetPosition;
 
+	UPROPERTY(VisibleAnywhere)
+	FVector InitialPosition;
+
 	UPROPERTY(EditAnywhere)
 	float ForwardAcceleration = 10.f;
 
