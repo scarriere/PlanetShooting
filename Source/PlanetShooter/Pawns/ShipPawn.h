@@ -6,6 +6,8 @@
 #include "ControllablePawn.h"
 #include "ShipPawn.generated.h"
 
+class AProjectile;
+
 UCLASS()
 class PLANETSHOOTER_API AShipPawn : public AControllablePawn
 {
@@ -27,6 +29,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	float LaunchAcceleration = 300.f;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AProjectile> ProjectileClass;
+
 	bool TrusterOn = false;
 	bool Launching = false;
 
@@ -36,6 +41,7 @@ protected:
 	void Interact();
 	void ToggleTruster();
 	void InitiateLaunch();
+	void Shoot();
 
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

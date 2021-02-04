@@ -6,6 +6,8 @@
 #include "ControllablePawn.h"
 #include "HumanPawn.generated.h"
 
+class AProjectile;
+
 UCLASS()
 class PLANETSHOOTER_API AHumanPawn : public AControllablePawn
 {
@@ -18,9 +20,13 @@ private:
 	UPROPERTY(EditAnywhere)
 	float Reach = 250.f;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AProjectile> ProjectileClass;
+
 protected:
 	void Jump();
 	void Collect();
+	void Shoot();
 
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

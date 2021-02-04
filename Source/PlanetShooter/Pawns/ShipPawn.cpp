@@ -3,6 +3,7 @@
 
 #include "ShipPawn.h"
 #include "HumanPawn.h"
+#include "../Actors/Projectile.h"
 #include "Misc/App.h"
 
 void AShipPawn::SetupPlayerInputComponent(UInputComponent * PlayerInputComponent)
@@ -13,6 +14,7 @@ void AShipPawn::SetupPlayerInputComponent(UInputComponent * PlayerInputComponent
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AShipPawn::ToggleTruster);
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Released, this, &AShipPawn::ToggleTruster);
 	PlayerInputComponent->BindAction(TEXT("Launch"), IE_Released, this, &AShipPawn::InitiateLaunch);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Pressed, this, &AShipPawn::Shoot);
 }
 
 void AShipPawn::Interact()
@@ -90,4 +92,10 @@ void AShipPawn::InitiateLaunch()
 	{
 		Launching = true;
 	}
+}
+
+void AShipPawn::Shoot()
+{
+	FTransform ProjectileTransform(GetActorRotation(), GetActorLocation() + GetActorForwardVector() * 50.f + GetActorUpVector() * 50.f);
+	GetWorld()->SpawnActor<AProjectile>(ProjectileClass.Get(), ProjectileTransform);
 }
